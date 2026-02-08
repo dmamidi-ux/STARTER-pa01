@@ -7,7 +7,6 @@
 
 class Card {
     public:
-        Card();
         Card(const string& s);
         char getSuite();
         int getNumber();
