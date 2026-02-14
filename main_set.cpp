@@ -68,7 +68,7 @@ int main(int argv, char** argc){
       if(it2 != player2.end() && player1.find(*it2) != player1.end()) {
         cout << "Bob picked matching card " << *it2 << endl;
         auto temp = it2;
-        it2++;
+        it2--;
         if(*it1 == *temp) {
           it1++;
         }
@@ -76,6 +76,25 @@ int main(int argv, char** argc){
         player2.erase(temp);
       }
     }
+  }
+
+  it1 = player1.begin();
+  it2 = player2.begin();
+  
+  cout << endl;
+
+  cout << "Alice's cards:" << endl;
+  while(it1 != player1.end()) {
+    cout << *it1 << endl;
+    it1++;
+  }
+
+  cout << endl;
+
+  cout << "Bob's cards:" << endl;
+  while(it2 != player2.end()) {
+    cout << *it2 << endl;
+    it2++;
   }
 
   return 0;
