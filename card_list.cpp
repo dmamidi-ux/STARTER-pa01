@@ -137,20 +137,18 @@ const Card* Card_List::Iterator::operator->() const {
     return &(node->data);
 }
 
-Card_List::Iterator Card_List::Iterator::operator++(int) {
-    Iterator temp = *this;
+Card_List::Iterator Card_List::Iterator::operator++() {
     if (node) {
         node = tree->successor(node);
     }
-    return temp;
+    return *this;
 }
 
-Card_List::Iterator Card_List::Iterator::operator--(int) {
-    Iterator temp = *this;
+Card_List::Iterator Card_List::Iterator::operator--() {
     if (node) {
         node = tree->predecessor(node);
-    } 
-    return temp;
+    }
+    return *this; 
 }
 
 Card_List::Iterator Card_List::begin() {
@@ -170,56 +168,48 @@ Card_List::Iterator Card_List::rend() {
 }
 
 void playGame(Card_List & p1, Card_List & p2) {
-  auto it1 = p1.begin();
-  auto it2 = p2.rbegin();
+    bool foundMatch = true;
 
-  while(it1 != p1.end() && it2 != p2.rend()) {
-    while(it1 != p1.end() && !p2.contains(*it1)) {
-      it1++;
-    }
-    if(it1 != p1.end() && p2.contains(*it1)) {
-      cout << "Alice picked matching card " << *it1 << endl;
-      auto temp = it1;
-      it1++;
-      if(*it2 == *temp) {
-        it2--;
-      }
-      p2.remove(*temp);
-      p1.remove(*temp);
-    }
-    if(it1 != p1.end()) {
-      while(it2 != p2.rend() && !p1.contains(*it2)) {
-        it2--;
-      }
-      if(it2 != p2.rend() && p1.contains(*it2)) {
-        cout << "Bob picked matching card " << *it2 << endl;
-        auto temp = it2;
-        it2--;
-        if(*it1 == *temp) {
-          it1++;
+    while (foundMatch) {
+        foundMatch = false;
+
+        for (auto it1 = p1.begin(); it1 != p1.end(); ++it1) {
+            if (p2.contains(*it1)) {
+                Card match = *it1;
+                cout << "Alice picked matching card " << match << endl;
+                
+                p1.remove(match);
+                p2.remove(match);
+                
+                foundMatch = true;
+                break; 
+            }
         }
-        p1.remove(*temp);
-        p2.remove(*temp);
-      }
+
+        if (!foundMatch) break; 
+
+        foundMatch = false;
+        for (auto it2 = p2.rbegin(); it2 != p2.rend(); --it2) {
+            if (p1.contains(*it2)) {
+                Card match = *it2;
+                cout << "Bob picked matching card " << match << endl;
+                
+                p1.remove(match);
+                p2.remove(match);
+                
+                foundMatch = true;
+                break; 
+            }
+        }
     }
-  }
 
-  it1 = p1.begin();
-  it2 = p2.begin();
-  
-  cout << endl;
+    cout << endl << "Alice's cards:" << endl;
+    for (auto it = p1.begin(); it != p1.end(); ++it) {
+        cout << *it << endl;
+    }
 
-  cout << "Alice's cards:" << endl;
-  while(it1 != p1.end()) {
-    cout << *it1 << endl;
-    it1++;
-  }
-
-  cout << endl;
-
-  cout << "Bob's cards:" << endl;
-  while(it2 != p2.end()) {
-    cout << *it2 << endl;
-    it2++;
-  }
+    cout << endl << "Bob's cards:" << endl;
+    for (auto it = p2.begin(); it != p2.end(); ++it) {
+        cout << *it << endl;
+    }
 }

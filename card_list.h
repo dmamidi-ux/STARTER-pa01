@@ -35,9 +35,9 @@ class Card_List {
                 const Card& operator*() const;
                 const Card* operator->() const;
 
-                Iterator operator++(int);
+                Iterator operator++();
 
-                Iterator operator--(int);
+                Iterator operator--();
 
                 bool operator==(const Iterator &other) const { return node == other.node; }
                 bool operator!=(const Iterator &other) const { return node != other.node; }
